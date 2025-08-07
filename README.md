@@ -1,98 +1,255 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Sistema de Gestión de Restaurantes - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend completo para el sistema de gestión de restaurantes desarrollado con NestJS, TypeORM y MySQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Características
 
-## Description
+- **Autenticación JWT** con roles de administrador y empleado
+- **Sistema multi-tenant** por restaurante con dominios personalizados
+- **Gestión de mesas** con estados (disponible, ocupada, reservada, limpieza)
+- **Gestión de menú** con categorías y disponibilidad
+- **Sistema de órdenes** con estados y seguimiento
+- **Control de inventario** con alertas de stock bajo
+- **Personalización de colores** por restaurante
+- **API REST** completa con documentación Swagger
+- **Validación de datos** con class-validator
+- **Base de datos MySQL** con TypeORM
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📋 Requisitos Previos
 
-## Project setup
+- Node.js (v18 o superior)
+- MySQL (v8.0 o superior)
+- npm o yarn
 
+## 🛠️ Instalación
+
+1. **Clonar el repositorio**
 ```bash
-$ npm install
+   git clone <repository-url>
+   cd backend
 ```
 
-## Compile and run the project
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
 
+3. **Configurar variables de entorno**
 ```bash
-# development
-$ npm run start
+   cp env.example .env
+   ```
+   
+   Editar el archivo `.env` con tus configuraciones:
+   ```env
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USERNAME=root
+   DB_PASSWORD=tu_password
+   DB_DATABASE=restaurant_management
+   JWT_SECRET=tu-super-secret-jwt-key
+   PORT=3001
+   NODE_ENV=development
+   ```
 
-# watch mode
-$ npm run start:dev
+4. **Crear la base de datos**
+   ```sql
+   CREATE DATABASE restaurant_management;
+   ```
 
-# production mode
-$ npm run start:prod
+5. **Ejecutar migraciones y seed**
+   ```bash
+   npm run db:reset
+   ```
+
+## 🚀 Ejecución
+
+### Desarrollo
+```bash
+npm run start:dev
 ```
 
-## Run tests
-
+### Producción
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run build
+npm run start:prod
 ```
 
-## Deployment
+## 📚 Documentación API
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+Una vez que el servidor esté corriendo, la documentación Swagger estará disponible en:
+```
+http://localhost:3001/api
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🔐 Autenticación
 
-## Resources
+### Registro de Restaurante
+```http
+POST /auth/register/restaurant
+Content-Type: application/json
 
-Check out a few resources that may come in handy when working with NestJS:
+{
+  "restaurantName": "Don Justo",
+  "description": "Restaurante de comida italiana",
+  "domain": "DonJusto",
+  "address": "Calle Principal 123",
+  "phone": "+1234567890",
+  "email": "info@donjusto.com",
+  "adminName": "Administrador",
+  "adminEmail": "admin@DonJusto.com",
+  "adminPassword": "admin123"
+}
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Login de Empleado
+```http
+POST /auth/login
+Content-Type: application/json
 
-## Support
+{
+  "email": "pedro@DonJusto.com",
+  "password": "pedro123",
+  "restaurantDomain": "DonJusto"
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🏗️ Estructura del Proyecto
 
-## Stay in touch
+```
+src/
+├── auth/                 # Autenticación y autorización
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   ├── jwt.strategy.ts
+│   ├── local.strategy.ts
+│   ├── jwt-auth.guard.ts
+│   ├── roles.guard.ts
+│   └── auth.module.ts
+├── entities/            # Entidades de TypeORM
+│   ├── user.entity.ts
+│   ├── restaurant.entity.ts
+│   ├── table.entity.ts
+│   ├── menu-item.entity.ts
+│   ├── order.entity.ts
+│   ├── order-item.entity.ts
+│   └── inventory-item.entity.ts
+├── dto/                 # Data Transfer Objects
+│   └── auth.dto.ts
+├── restaurants/         # Gestión de restaurantes
+├── tables/             # Gestión de mesas
+├── menu/               # Gestión de menú
+├── orders/             # Gestión de órdenes
+├── inventory/          # Gestión de inventario
+├── database/           # Scripts de base de datos
+│   └── seed.ts
+├── app.module.ts       # Módulo principal
+└── main.ts            # Punto de entrada
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🔧 Scripts Disponibles
 
-## License
+- `npm run start:dev` - Ejecutar en modo desarrollo con hot reload
+- `npm run build` - Compilar para producción
+- `npm run start:prod` - Ejecutar en modo producción
+- `npm run seed` - Poblar la base de datos con datos de ejemplo
+- `npm run db:reset` - Reconstruir y poblar la base de datos
+- `npm run lint` - Ejecutar linter
+- `npm run test` - Ejecutar tests
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📊 Endpoints Principales
+
+### Autenticación
+- `POST /auth/login` - Login de usuarios
+- `POST /auth/register/restaurant` - Registro de restaurante
+- `POST /auth/register/employee` - Registro de empleado (requiere admin)
+- `PUT /auth/change-password` - Cambiar contraseña
+- `GET /auth/profile` - Obtener perfil del usuario
+
+### Restaurantes
+- `GET /restaurants/profile` - Obtener perfil del restaurante
+- `GET /restaurants/dashboard/stats` - Estadísticas del dashboard
+- `PUT /restaurants/colors` - Actualizar colores del restaurante
+- `PUT /restaurants/settings` - Actualizar configuración
+
+### Mesas
+- `GET /tables` - Listar todas las mesas
+- `POST /tables` - Crear nueva mesa
+- `PUT /tables/:id` - Actualizar mesa
+- `PUT /tables/:id/status` - Cambiar estado de mesa
+- `DELETE /tables/:id` - Eliminar mesa
+- `GET /tables/stats` - Estadísticas de mesas
+
+### Menú
+- `GET /menu` - Listar elementos del menú
+- `POST /menu` - Crear elemento del menú
+- `PUT /menu/:id` - Actualizar elemento del menú
+- `PUT /menu/:id/toggle-availability` - Cambiar disponibilidad
+- `PUT /menu/:id/toggle-featured` - Cambiar destacado
+- `DELETE /menu/:id` - Eliminar elemento del menú
+- `GET /menu/stats` - Estadísticas del menú
+
+### Órdenes
+- `GET /orders` - Listar todas las órdenes
+- `POST /orders` - Crear nueva orden
+- `PUT /orders/:id/status` - Cambiar estado de orden
+- `DELETE /orders/:id` - Eliminar orden
+- `GET /orders/stats` - Estadísticas de órdenes
+
+### Inventario
+- `GET /inventory` - Listar elementos del inventario
+- `POST /inventory` - Crear elemento del inventario
+- `PUT /inventory/:id` - Actualizar elemento del inventario
+- `PUT /inventory/:id/stock` - Actualizar stock
+- `DELETE /inventory/:id` - Eliminar elemento del inventario
+- `GET /inventory/stats` - Estadísticas del inventario
+- `GET /inventory/low-stock` - Elementos con stock bajo
+- `GET /inventory/expiring` - Elementos próximos a vencer
+
+## 🔒 Seguridad
+
+- **JWT Tokens** para autenticación
+- **Roles y permisos** (admin/employee)
+- **Validación de datos** con class-validator
+- **CORS** configurado para desarrollo
+- **Contraseñas hasheadas** con bcrypt
+
+## 🗄️ Base de Datos
+
+El sistema utiliza MySQL con las siguientes tablas principales:
+
+- `users` - Usuarios del sistema
+- `restaurants` - Información de restaurantes
+- `tables` - Mesas del restaurante
+- `menu_items` - Elementos del menú
+- `orders` - Órdenes de clientes
+- `order_items` - Elementos de las órdenes
+- `inventory_items` - Elementos del inventario
+
+## 🧪 Testing
+
+```bash
+# Ejecutar tests unitarios
+npm run test
+
+# Ejecutar tests con coverage
+npm run test:cov
+
+# Ejecutar tests en modo watch
+npm run test:watch
+```
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📞 Soporte
+
+Para soporte técnico, contacta al equipo de desarrollo.
